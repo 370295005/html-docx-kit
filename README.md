@@ -1,5 +1,7 @@
 # html-docx-kit
 
+[English](README.en.md) | 简体中文
+
 用 TypeScript 实现的 HTML → DOCX npm 库。参考 [html-docx-js](https://github.com/evidenceprime/html-docx-js) 的 **altChunk + MHTML** 路线，支持 Node.js 和现代浏览器。HTML 的实际转换由 Microsoft Word 在打开文档时完成。
 
 安装：
