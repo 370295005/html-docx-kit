@@ -2,10 +2,10 @@
 
 用 TypeScript 实现的 HTML → DOCX npm 库。参考 [html-docx-js](https://github.com/evidenceprime/html-docx-js) 的 **altChunk + MHTML** 路线，支持 Node.js 和现代浏览器。HTML 的实际转换由 Microsoft Word 在打开文档时完成。
 
-当前**尚未发布到 npm，也未检查包名是否可用**。从源码仓库执行 `npm ci`、`npm pack` 后，可安装生成的本地 npm 包：
+安装：
 
 ```sh
-npm install ./html-docx-kit-0.1.1.tgz
+npm install html-docx-kit
 ```
 
 ## Node.js
@@ -79,7 +79,7 @@ setTimeout(() => URL.revokeObjectURL(url), 1000);
 | `pageSize` | `'letter'` | `'letter'`、`'A4'` 或 `{ width, height }`，自定义尺寸单位为 twips，方向按长短边确定 |
 | `margins` | 见下方 | 可只覆盖部分页边距 |
 | `externalImages` | `'error'` | 外部或相对图片地址默认报错；`'preserve'` 原样保留地址，不下载、不嵌入 |
-| `inlineStyles` | `true` | 导出前内联文档中 `<style>` 的静态规则；`false` 保留 0.1.0 的直接封装行为 |
+| `inlineStyles` | `true` | 导出前内联文档中 `<style>` 的静态规则；`false` 保留样式表，不进行内联 |
 | `compression` | `6` | ZIP 压缩等级，整数 `0–9` |
 | `properties` | 空字符串 | `{ title?, creator?, description? }`，写入并转义文档元数据 |
 
@@ -119,7 +119,7 @@ HTML 和图片均使用完整 base64 编码，按 [RFC 2045](https://www.rfc-edi
 
 ## 表格内边距与居中
 
-0.1.1 修复了 Word 导入 `class="class-table small-table"` 等组合时，后代规则中的单元格 padding 可能丢失的问题。普通调用无需改变，默认开启样式内联。更多样式生效后，行高和分页可能随之变化；需要原有直接封装方式时可传 `{ inlineStyles: false }`。
+默认启用样式内联，使 Word 导入 `class="class-table small-table"` 等组合时也能应用后代规则中的单元格 padding。更多样式生效后，行高和分页可能随之变化；如需保留原始样式表，可传 `{ inlineStyles: false }`。
 
 内边距和垂直对齐是两个独立设置。需要居中时，同时明确单元格的 vertical-align 和内容段落的 margin：
 
@@ -145,7 +145,7 @@ npm pack
 
 测试检查 ZIP 与 OOXML 关系、MIME 解码、中文和 emoji、图片字节与去重、页面选项、错误处理、ESM/CJS 和无 Node 全局变量的浏览器包。格式检查不能代替真实 Word 的排版验收；可用 `examples/sample.docx` 在目标 Word 版本中检查。
 
-0.1.1：42 项自动化测试通过，TypeScript 构建通过；npm tarball 在独立项目中离线安装后，ESM/CJS、Blob/Buffer 及 NodeNext 类型声明检查通过。已在 macOS Microsoft Word 16.113.4 验证多 class 表格的四边 4pt 内边距、零段距及 top/middle/bottom 对齐，详见 `examples/table-padding/TEST-RESULTS.md`。中文、标题样式、列表、表格和嵌入 PNG 也已在上述 Word 版本验收。其他 Word 版本仍需按使用场景验收。
+42 项自动化测试通过，TypeScript 构建通过；npm tarball 在独立项目中离线安装后，ESM/CJS、Blob/Buffer 及 NodeNext 类型声明检查通过。已在 macOS Microsoft Word 16.113.4 验证多 class 表格的四边 4pt 内边距、零段距及 top/middle/bottom 对齐，详见 `examples/table-padding/TEST-RESULTS.md`。中文、标题样式、列表、表格和嵌入 PNG 也已在上述 Word 版本验收。其他 Word 版本仍需按使用场景验收。
 
 ## 与 html-docx-js 的关系
 
